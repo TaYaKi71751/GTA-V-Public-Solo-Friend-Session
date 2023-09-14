@@ -14,8 +14,9 @@ public class Find {
 		for(File drive_path:drive_paths){
 			// https://stackoverflow.com/questions/15464111/run-cmd-commands-through-java
 			// https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr
+			// https://www.youtube.com/watch?v=v7SGFmW2pKc
 			ProcessBuilder builder = new ProcessBuilder(
-					"cmd.exe", "/c", "findstr " + drive_path + " /c:\'" + filename + "\'"
+					"cmd.exe", "/c", "where /r " + drive_path + " " + filename + ""
 			);
 			builder.redirectErrorStream(true);
 			Process p = builder.start();
