@@ -35,7 +35,7 @@ public class StartupMeta {
 		for(String prefix:prefixes){
 			result += (prefix + CR);
 		}
-		result += (session_unique_wrapped + CR + LF);
+		if(session_unique.length() > 0) result += (session_unique_wrapped + CR + LF);
 		return result;
 	}
 	public ArrayList<File> getPaths() throws IOException {
