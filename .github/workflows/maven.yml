@@ -40,8 +40,10 @@ jobs:
         files: |
           LICENSE*
           target/*.jar
+          target/*.exe
     - uses: actions/upload-artifact@v2
       with:
         name: package (JAR Files)
         path: |
           target/*.jar
+          target/*.exe

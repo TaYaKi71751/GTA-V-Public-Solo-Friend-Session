@@ -25,7 +25,22 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+            <groupId>com.oracle.java</groupId>
+            <artifactId>jre</artifactId>
+            <classifier>win64</classifier>
+            <type>tgz</type>
+            <version>1.8.0_131</version>
+        </dependency>
   </dependencies>
+  
+    <repositories>
+        <repository>
+            <!-- this repository has the JRE tgz -->
+            <id>alfresco</id>
+            <url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
 
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -90,7 +105,31 @@
       </plugin>
       </plugins>
     </pluginManagement>
+    <!-- https://stackoverflow.com/questions/58292415/maven-does-not-execute-launch4j-plugin -->
+
     <plugins>
+          <!-- https://stackoverflow.com/questions/49651902/how-to-get-the-jre-to-bundle-with-launch4j -->
+            <plugin>
+                <!-- this is to extract the JRE tgz file we downloaded -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>com.oracle.java</includeGroupIds>
+                            <includeTypes>tgz</includeTypes>
+                            <includeArtifactIds>jre</includeArtifactIds>
+                            <includeClassifiers>win32</includeClassifiers>
+                            <outputDirectory>target/win32</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
       <!-- Assemble with dependencies -->
 						      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -110,6 +149,44 @@
           </execution>
         </executions>
       </plugin>
+    <!-- launch4j -->
+        <plugin>
+          <groupId>com.akathist.maven.plugins.launch4j</groupId>
+          <artifactId>launch4j-maven-plugin</artifactId>
+          <executions>
+                <execution>
+                  <id>l4j-gui</id>
+                  <phase>package</phase>
+                  <goals><goal>launch4j</goal></goals>
+                  <configuration>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+                    <outfile>target/${project.artifactId}-${project.version}-jar-with-dependencies.exe</outfile>
+                    <jar>target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</jar>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path>./target/win32/java</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion>8</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+                  </configuration>
+                </execution>
+          </executions>
+        </plugin>
+      
     </plugins>
   </build>
 </project>
