@@ -1,5 +1,6 @@
 package gtav;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,12 +28,10 @@ public class App extends JFrame {
 		session_unique.setSize(250, 100);
 		session_unique.setLocation(0, 0);
 
-		JButton deleteButton = new JButton("Delete Private Session");
-		deleteButton.setSize(125, 100);
-		deleteButton.setLocation(0, 100);
-		JButton applyButton = new JButton("Apply Private Session");
-		applyButton.setSize(125, 100);
-		applyButton.setLocation(125, 100);
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.setPreferredSize(new Dimension(100, 60));
+		JButton applyButton = new JButton("Apply");
+		applyButton.setPreferredSize(new Dimension(100, 60));
 
 		JLabel status_label = new JLabel();
 
