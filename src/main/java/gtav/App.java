@@ -94,6 +94,7 @@ public class App extends JFrame {
 		add(deleteButton);
 		add(status_label);
 
+		setTitle("GTA V Public Solo Friend Session");
 		setVisible(true);
 	}
 
