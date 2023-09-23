@@ -1,5 +1,4 @@
-### !!!!!!!! THIS IS FOR WINDOWS ONLY !!!!!!!
-#### !!!!! LINUX GOES [steam-shortcuts](https://github.com/TaYaKi71751/steam-shortcuts) !!!!!
+### !!!!!!!! THIS IS FOR WINDOWS AND LINUX !!!!!!!
 
 ### Build
 ```

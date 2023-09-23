@@ -43,9 +43,9 @@ public class StartupMeta {
 		ArrayList<File> play_gtav_paths = find.findFile("PlayGTAV.exe");
 		ArrayList<File> startup_meta_paths = new ArrayList<>();
 		for(File play_gtav_path:play_gtav_paths){
-			File gtav_path = new File(play_gtav_path + "\\..");
-			File startup_meta_path = new File(gtav_path + "\\x64\\data\\startup.meta");
-			if((new File(startup_meta_path + "\\..")).exists()) {
+			File gtav_path = Path.getUpperPath(play_gtav_path);
+			File startup_meta_path = new File(String.join(File.separator,new String[]{gtav_path + "","x64","data","startup.meta"}));
+			if(Path.getUpperPath(startup_meta_path).exists()) {
 				startup_meta_paths.add(startup_meta_path);
 			}
 		}
