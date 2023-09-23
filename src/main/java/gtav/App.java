@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,6 +33,8 @@ public class App extends JFrame {
 		deleteButton.setPreferredSize(new Dimension(100, 60));
 		JButton applyButton = new JButton("Apply");
 		applyButton.setPreferredSize(new Dimension(100, 60));
+		JButton randomButton = new JButton("Random");
+		randomButton.setPreferredSize(new Dimension(100, 60));
 
 		JLabel status_label = new JLabel();
 
@@ -87,10 +90,23 @@ public class App extends JFrame {
 			}
 		});
 
+		randomButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				try {
+					session_unique.setText(Random.randomString());
+				} catch (NoSuchAlgorithmException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					status_label.setText(e1.getMessage());
+				}
+			}
+		});
+
 		add(passcode_title_label);
 		add(session_unique);
 		add(applyButton);
 		add(deleteButton);
+		add(randomButton);
 		add(status_label);
 
 		setTitle("GTA V Public Solo Friend Session");
