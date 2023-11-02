@@ -184,7 +184,7 @@
   <supportUrl></supportUrl>
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
-  <manifest></manifest>
+  <manifest>.manifest</manifest>
   <icon></icon>
   <jre>
     <path>./target/win32/java</path>
