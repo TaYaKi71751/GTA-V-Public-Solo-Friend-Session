@@ -80,7 +80,7 @@ public class App extends JFrame {
 						}
 					}
 					status_label.setText("Deleting Private Session");
-					startup_meta.apply(sess_unique);
+					startup_meta.delete();
 					status_label.setText("Deleted Private Session. Now you can start GTAV");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
