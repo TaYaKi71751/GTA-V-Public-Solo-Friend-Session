@@ -14,14 +14,17 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class App extends JFrame {
-	public App() {
+	public static void main(String[] args) throws IOException {
+		// TODO Add GUI with javax.
+		App app = new App();
+		app.repaint();
 		StartupMeta startup_meta = new StartupMeta();
 		Process process = new Process();
 
-		setLayout(new FlowLayout(FlowLayout.LEFT));
-		setSize(250, 200);
-		setLocation(100, 100);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		app.setLayout(new FlowLayout(FlowLayout.LEFT));
+		app.setSize(430, 200);
+		app.setLocation(100, 100);
+		app.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		JLabel passcode_title_label = new JLabel("Passcode");
 
@@ -29,6 +32,8 @@ public class App extends JFrame {
 		session_unique.setSize(250, 100);
 		session_unique.setLocation(0, 0);
 
+		JButton killButton = new JButton("Kill");
+		killButton.setPreferredSize(new Dimension(100, 60));
 		JButton deleteButton = new JButton("Delete");
 		deleteButton.setPreferredSize(new Dimension(100, 60));
 		JButton applyButton = new JButton("Apply");
@@ -38,84 +43,91 @@ public class App extends JFrame {
 
 		JLabel status_label = new JLabel();
 
-		applyButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
-				String sess_unique = session_unique.getText();
-				try {
-					String[] process_name_list = {"GTA5.exe","PlayGTAV.exe"};
-					for(String process_name:process_name_list){
-						status_label.setText("Killing process " + process_name);
-						try {
-							process.kill(process_name);
-							status_label.setText("Killed process " + process_name);
-						} catch(IOException e2){
-							e2.printStackTrace();
-							status_label.setText(e2.getMessage());
-						}
+		killButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event){
+				String[] process_name_list = {"GTA5.exe","PlayGTAV.exe"};
+				for(String process_name:process_name_list){
+					status_label.setText("Killing process " + process_name);
+					try {
+						process.kill(process_name);
+						status_label.setText("Killed process " + process_name);
+					} catch(Exception e){
+						e.printStackTrace();
+						status_label.setText(e.getMessage());
 					}
+				}
+			}
+		});
+		applyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event){
+				String sess_unique = session_unique.getText();
+				String[] process_name_list = {"GTA5.exe","PlayGTAV.exe"};
+				try {
 					status_label.setText("Applying Private Session");
 					startup_meta.apply(sess_unique);
-					status_label.setText("Applied Private Session. Now you can start GTAV");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					status_label.setText(e1.getMessage());
+				} catch (Exception e) {
+					e.printStackTrace();
+					status_label.setText(e.getMessage());
 				}
+				for(String process_name:process_name_list){
+					status_label.setText("Killing process " + process_name);
+					try {
+						process.kill(process_name);
+						status_label.setText("Killed process " + process_name);
+					} catch(Exception e){
+						e.printStackTrace();
+						status_label.setText(e.getMessage());
+					}
+				}
+				status_label.setText("Applied Private Session. Now you can start GTAV");
 			}
 		});
 
 		deleteButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
+			public void actionPerformed(ActionEvent event){
 				String sess_unique = session_unique.getText();
+				String[] process_name_list = {"GTA5.exe","PlayGTAV.exe"};
 				try {
-					String[] process_name_list = {"GTA5.exe","PlayGTAV.exe"};
-					for(String process_name:process_name_list){
-						status_label.setText("Killing process " + process_name);
-						try {
-							process.kill(process_name);
-							status_label.setText("Killed process " + process_name);
-						} catch(IOException e2){
-							e2.printStackTrace();
-							status_label.setText(e2.getMessage());
-						}
-					}
 					status_label.setText("Deleting Private Session");
 					startup_meta.delete();
-					status_label.setText("Deleted Private Session. Now you can start GTAV");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					status_label.setText(e1.getMessage());
+				} catch (Exception e) {
+					e.printStackTrace();
+					status_label.setText(e.getMessage());
 				}
+				for(String process_name:process_name_list){
+					status_label.setText("Killing process " + process_name);
+					try {
+						process.kill(process_name);
+						status_label.setText("Killed process " + process_name);
+					} catch(Exception e){
+						e.printStackTrace();
+						status_label.setText(e.getMessage());
+					}
+				}
+				status_label.setText("Deleted Private Session. Now you can start GTAV");
 			}
 		});
 
 		randomButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e){
+			public void actionPerformed(ActionEvent event){
 				try {
 					session_unique.setText(Random.randomString());
-				} catch (NoSuchAlgorithmException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					status_label.setText(e1.getMessage());
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+					status_label.setText(e.getMessage());
 				}
 			}
 		});
 
-		add(passcode_title_label);
-		add(session_unique);
-		add(applyButton);
-		add(deleteButton);
-		add(randomButton);
-		add(status_label);
+		app.add(passcode_title_label);
+		app.add(session_unique);
+		app.add(killButton);
+		app.add(applyButton);
+		app.add(deleteButton);
+		app.add(randomButton);
+		app.add(status_label);
 
-		setTitle("GTA V Public Solo Friend Session");
-		setVisible(true);
-	}
-
-	public static void main(String[] args) throws IOException {
-		// TODO TEST THIS ON WINDOWS
-		// TODO Add GUI with javax.
-		new App();
+		app.setTitle("GTA V Public Solo Friend Session");
+		app.setVisible(true);
 	}
 }
