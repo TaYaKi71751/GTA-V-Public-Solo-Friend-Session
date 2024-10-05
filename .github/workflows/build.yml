@@ -25,7 +25,7 @@ jobs:
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: rdr2_session_macos_x64
+        name: rdr2_session_macos_x64.app
         path: |
           build/macos/Build/Products/Release/
 
