@@ -5,6 +5,30 @@ on:
   merge_group:
 
 jobs:
+  macos-build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@main
+    - name: Set up Flutter
+      uses: subosito/flutter-action@main
+    - name: Podfile
+      run: |
+        cd macos
+        rm Podfile.lock
+        flutter clean
+        flutter pub get
+        pod install
+        pod update
+    - name: Build
+      run: |
+        flutter build macos
+    - name: Save build Artifact
+      uses: actions/upload-artifact@main
+      with:
+        name: rdr2_session_macos_x64
+        path: |
+          build/macos/Build/Products/Release/rdr2_session.app
+
   windows-build:
     runs-on: windows-latest
     steps:
