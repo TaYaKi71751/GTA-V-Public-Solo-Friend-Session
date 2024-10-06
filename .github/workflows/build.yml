@@ -28,14 +28,13 @@ jobs:
 
     - uses: QQxiaoming/create-dmg-action@v0.0.2
       with:
-        name: gtav_session_macos_x64
+        name: MacOS
         srcdir: target
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: gtav_session_macos_x64.app
-        path: |
-          *.dmg
+        name: MacOS
+        path: MacOS.dmg
 
   windows-build:
     runs-on: windows-latest
@@ -46,12 +45,12 @@ jobs:
     - name: Build
       run: |
         flutter build windows
+        Compress-Archive -Path build\windows\x64\runner\Release\* -Destination Windows.zip
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: gtav_session_windows_x64
-        path: |
-          build\windows\x64\runner\Release\*
+        name: Windows
+        path: Windows.zip
     
   # https://github.com/AppImageCrafters/appimage-builder-flutter-example/blob/main/.github/workflows/appimage.yml
   linux-build:
@@ -127,8 +126,72 @@ jobs:
       with:
         entrypoint: appimage-builder
         args: --recipe ./AppImageBuilder-${{ matrix.arch }}.yml --skip-test
+    - name: Zip
+      run: |
+        zip Linux.zip *.AppImage*
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: gtav_session.AppImage
-        path: './*.AppImage*'
+        name: Linux
+        path: Linux.zip
+
+  release:
+    needs: [ macos-build,windows-build,linux-build ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - name:
+      id: tag
+      run: |
+        echo "value=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+    - uses: actions/download-artifact@main
+      with:
+        name: Linux
+        path: .
+    - uses: actions/download-artifact@main
+      with:
+        name: Windows
+        path: .
+    - uses: actions/download-artifact@main
+      with:
+        name: MacOS
+        path: .
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ steps.tag.outputs.value }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes on this release
+        draft: false
+        prerelease: true
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./MacOS.dmg
+        asset_name: MacOS.dmg
+        asset_content_type: application/zip
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./Windows.zip
+        asset_name: Windows.zip
+        asset_content_type: application/zip
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./Linux.zip
+        asset_name: Linux.zip
+        asset_content_type: application/zip
