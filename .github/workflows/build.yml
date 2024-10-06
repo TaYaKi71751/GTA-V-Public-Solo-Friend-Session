@@ -22,12 +22,13 @@ jobs:
     - name: Build
       run: |
         flutter build macos
+        chmod +x build/macos/Build/Products/Release/*.app/Contents/MacOS/*
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
         name: rdr2_session_macos_x64.app
         path: |
-          build/macos/Build/Products/Release/
+          build/macos/Build/Products/Release/*.app
 
   windows-build:
     runs-on: windows-latest
