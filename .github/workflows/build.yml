@@ -28,7 +28,7 @@ jobs:
 
     - uses: QQxiaoming/create-dmg-action@v0.0.2
       with:
-        name: rdr2_session_macos_x64.dmg
+        name: rdr2_session_macos_x64
         srcdir: target
     - name: Save build Artifact
       uses: actions/upload-artifact@main
