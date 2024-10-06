@@ -22,13 +22,20 @@ jobs:
     - name: Build
       run: |
         flutter build macos
-        chmod +x build/macos/Build/Products/Release/*.app/Contents/MacOS/*
+        mkdir -p target
+        cp -R build/macos/Build/Products/Release/rdr2_session.app target/
+        sudo chmod +x target/rdr2_session.app/Contents/MacOS/rdr2_session
+
+    - uses: QQxiaoming/create-dmg-action@v0.0.2
+      with:
+        name: rdr2_session_macos_x64.dmg
+        srcdir: target
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
         name: rdr2_session_macos_x64.app
         path: |
-          build/macos/Build/Products/Release/*.app
+          *.dmg
 
   windows-build:
     runs-on: windows-latest
