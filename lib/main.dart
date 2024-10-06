@@ -3,10 +3,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:rdr2_session/boot_launcher_flow.dart';
-import 'package:rdr2_session/find.dart';
-import 'package:rdr2_session/process.dart';
-import 'package:rdr2_session/startup_meta.dart';
+import 'package:gtav_session/find.dart';
+import 'package:gtav_session/process.dart';
+import 'package:gtav_session/startup_meta.dart';
 
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:pointycastle/asymmetric/api.dart';
@@ -53,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _kill() async {
-    List<String> processList = 'PlayRDR2.exe,RDR2.exe'.split(',');
+    List<String> processList = 'PlayGTAV.exe,GTA5.exe'.split(',');
     for (String process in processList) {
       setState(() {
         _status = 'Killing $process';
@@ -69,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _status = 'Finding Game Paths';
     });
-    List<File> game_paths = (await Find.file('PlayRDR2.exe'));
+    List<File> game_paths = (await Find.file('PlayGTAV.exe'));
     List<Directory> game_directories = List.empty(growable: true);
     for (File game_path in game_paths) {
       game_directories.add(game_path.parent);
@@ -78,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _status = 'Applying';
     });
     await StartupMeta.apply(game_directories, passcode.text);
-    await BootLauncherFlow.apply(game_directories, passcode.text);
     await _kill();
 
     setState(() {
@@ -90,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _status = 'Finding Game Paths';
     });
-    List<File> game_paths = (await Find.file('PlayRDR2.exe'));
+    List<File> game_paths = (await Find.file('PlayGTAV.exe'));
     List<Directory> game_directories = List.empty(growable: true);
     for (File game_path in game_paths) {
       game_directories.add(game_path.parent);
@@ -99,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
       _status = 'Deleting';
     });
     await StartupMeta.delete(game_directories);
-    await BootLauncherFlow.delete(game_directories);
     await _kill();
 
     setState(() {

@@ -23,17 +23,17 @@ jobs:
       run: |
         flutter build macos
         mkdir -p target
-        cp -R build/macos/Build/Products/Release/rdr2_session.app target/
-        sudo chmod +x target/rdr2_session.app/Contents/MacOS/rdr2_session
+        cp -R build/macos/Build/Products/Release/gtav_session.app target/
+        sudo chmod +x target/gtav_session.app/Contents/MacOS/gtav_session
 
     - uses: QQxiaoming/create-dmg-action@v0.0.2
       with:
-        name: rdr2_session_macos_x64
+        name: gtav_session_macos_x64
         srcdir: target
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: rdr2_session_macos_x64.app
+        name: gtav_session_macos_x64.app
         path: |
           *.dmg
 
@@ -49,7 +49,7 @@ jobs:
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: rdr2_session_windows_x64
+        name: gtav_session_windows_x64
         path: |
           build\windows\x64\runner\Release\*
     
@@ -130,5 +130,5 @@ jobs:
     - name: Save build Artifact
       uses: actions/upload-artifact@main
       with:
-        name: rdr2_session.AppImage
+        name: gtav_session.AppImage
         path: './*.AppImage*'

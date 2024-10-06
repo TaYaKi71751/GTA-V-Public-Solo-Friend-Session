@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "rdr2_session" "\0"
+            VALUE "FileDescription", "gtav_session" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "rdr2_session" "\0"
+            VALUE "InternalName", "gtav_session" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "rdr2_session.exe" "\0"
-            VALUE "ProductName", "rdr2_session" "\0"
+            VALUE "OriginalFilename", "gtav_session.exe" "\0"
+            VALUE "ProductName", "gtav_session" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,4 +1,4 @@
-# rdr2_session
+# gtav_session
 
 A new Flutter project.
 
