@@ -52,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _kill() async {
+			try{
     List<String> processList = 'PlayGTAV.exe,GTA5.exe'.split(',');
     for (String process in processList) {
       setState(() {
@@ -62,9 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
         _status = 'Killed $process';
       });
     }
+			} catch (e) {
+				_status = e.toString();
+			}
   }
 
   Future<void> _apply() async {
+			try {
     setState(() {
       _status = 'Finding Game Paths';
     });
@@ -82,9 +87,13 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _status = 'Applied';
     });
+			} catch (e) {
+				_status = e.toString();
+			}
   }
 
   Future<void> _delete() async {
+			try {
     setState(() {
       _status = 'Finding Game Paths';
     });
@@ -102,6 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _status = 'Deleted';
     });
+			} catch (e) {
+				_status = e.toString();
+			}
   }
 
   @override
